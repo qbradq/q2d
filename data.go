@@ -46,7 +46,7 @@ func init() {
 	FontAlternative = loadFont(fontAlternativeData, 8)
 	FontFantasy = loadFont(fontFantasyData, 8)
 	FontSciFi = loadFont(fontSciFiData, 8)
-	FontTallChunky = loadFont(fontTallChunkyData, 8)
+	FontTallChunky = loadFont(fontTallChunkyData, 16)
 	FontThin = loadFont(fontThinData, 8)
 	FontNormal = loadFont(fontNormalData, 8)
 	FontTall = loadFont(fontTallData, 16)

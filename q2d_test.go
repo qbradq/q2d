@@ -58,3 +58,48 @@ func TestImage(t *testing.T) {
 		t.Errorf("Should be drawn after pop clip")
 	}
 }
+
+func TestBlit(t *testing.T) {
+	src := NewImage(20, 20)
+	red := Color{255, 0, 0, 255}
+	src.Fill(red)
+
+	dst := NewImage(50, 50)
+
+	// Blit at (10, 10)
+	dst.Blit(src, Point{10, 10})
+
+	// Check (10, 10) -> should be red
+	c := dst.At(Point{10, 10})
+	if c != red {
+		t.Errorf("Expected red at 10,10, got %v", c)
+	}
+
+	// Check (9, 9) -> should be transparent/black
+	c = dst.At(Point{9, 9})
+	empty := Color{}
+	if c != empty {
+		t.Errorf("Expected empty at 9,9, got %v", c)
+	}
+
+	// Check (29, 29) -> red (10+19, 10+19)
+	c = dst.At(Point{29, 29})
+	if c != red {
+		t.Errorf("Expected red at 29,29, got %v", c)
+	}
+
+	// Test Clipping in Blit
+	dst.PushClip(Rectangle{0, 0, 15, 15})
+	dst.Fill(empty) // Clear
+
+	dst.Blit(src, Point{10, 10})
+
+	// (14, 14) inside clip -> red
+	if dst.At(Point{14, 14}) != red {
+		t.Errorf("Expected red at 14,14 (clipped)")
+	}
+	// (15, 15) outside clip -> empty
+	if dst.At(Point{15, 15}) != empty {
+		t.Errorf("Expected empty at 15,15 (clipped)")
+	}
+}
